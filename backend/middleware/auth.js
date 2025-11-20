@@ -7,7 +7,7 @@ const authMiddleware = (req, res, next) => {
         error: "No Authentication token provided",
       });
     } //bounces user if no token found
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); //verifies toek
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); //verifies token
     req.user = decoded; // adds verified user to request obj
     next();
   } catch (error) {
