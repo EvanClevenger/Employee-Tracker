@@ -1,0 +1,192 @@
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import User from "./models/User.ts";
+import Performance from "./models/Performace.ts";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+mongoose
+  .connect(process.env.MONGODB_URI as string, {})
+  .then(() => console.log("Connected to DB"))
+  .catch((err) => console.error("ERROR connecting to DB:", err));
+
+const randomNum = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+interface MonthError {
+  month: string;
+  salseforceErrors: number;
+  jiraErrors: number;
+}
+
+const generateMonthError = () => {
+  const months = [];
+  const currentDate = new Date();
+  for (let i = 5; i >= 0; i--) {
+    const date = new Date(currentDate);
+    date.setMonth(date.getMonth() - i);
+    const monthStr = `${date.getFullYear()}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}`;
+    months.push({
+      month: monthStr,
+      salesforceErrors: randomNum(0, 15),
+      jiraErrors: randomNum(0, 10),
+    });
+    return months;
+  }
+};
+// helper function to generate monthly errors
+
+interface Employee {
+  email: string;
+  password: string;
+  firstName: string;
+  title: string;
+  department: string;
+  startDate: Date;
+}
+
+const employees = [
+  {
+    email: "eclevenger@switch.com",
+    password: "password123",
+    firstName: "Emily",
+    title: "Network Infrastructure Technician",
+    department: "Engineering",
+    startDate: new Date("2022-03-15"),
+  },
+  {
+    email: "jsmith@switch.com",
+    password: "password123",
+    firstName: "John",
+    title: "Software Engineer",
+    department: "Engineering",
+    startDate: new Date("2023-01-10"),
+  },
+  {
+    email: "sjohnson@switch.com",
+    password: "password123",
+    firstName: "Sarah",
+    title: "Lead Engineer",
+    department: "Engineering",
+    startDate: new Date("2021-06-01"),
+  },
+  {
+    email: "mwilliams@switch.com",
+    password: "password123",
+    firstName: "Michael",
+    title: "Sales Manager",
+    department: "Sales",
+    startDate: new Date("2022-08-20"),
+  },
+  {
+    email: "rbrown@switch.com",
+    password: "password123",
+    firstName: "Rachel",
+    title: "Account Executive",
+    department: "Sales",
+    startDate: new Date("2023-02-14"),
+  },
+  {
+    email: "ddavis@switch.com",
+    password: "password123",
+    firstName: "David",
+    title: "Sales Representative",
+    department: "Sales",
+    startDate: new Date("2023-05-01"),
+  },
+  {
+    email: "amiller@switch.com",
+    password: "password123",
+    firstName: "Amanda",
+    title: "Operations Manager",
+    department: "Operations",
+    startDate: new Date("2021-11-10"),
+  },
+  {
+    email: "jwilson@switch.com",
+    password: "password123",
+    firstName: "James",
+    title: "Operations Coordinator",
+    department: "Operations",
+    startDate: new Date("2022-09-05"),
+  },
+  {
+    email: "lmoore@switch.com",
+    password: "password123",
+    firstName: "Linda",
+    title: "Junior Engineer",
+    department: "Engineering",
+    startDate: new Date("2024-01-08"),
+  },
+  {
+    email: "ktaylor@switch.com",
+    password: "password123",
+    firstName: "Kevin",
+    title: "Business Analyst",
+    department: "Operations",
+    startDate: new Date("2023-07-22"),
+  },
+];
+// Dummy employee data
+
+const seedDatabase = async (): Promise<void> => {
+  try {
+    console.log("clearing existing Data");
+    //clear existing data
+    await User.deleteMany({});
+    await Performance.deleteMany({});
+    console.log("creating users");
+    for (const emp of employees) {
+      const lastName = (emp.email.split("@")[0] ?? "").slice(1) || "unknown"; //extracting last name
+      const hashedPassword = await bcrypt.hash(emp.password, 10); // hash password
+      const user = new User({
+        ...emp,
+        password: hashedPassword,
+        lastName,
+        profilePic: "😎",
+      });
+      await user.save();
+      console.log(`Created ${emp.firstName}, ${lastName}`);
+      //create performace data
+      const performance = new Performance({
+        employeeLastName: lastName,
+        salesforce: {
+          totalCasesToDate: randomNum(50, 500),
+          totalCasesThisYear: randomNum(20, 150),
+          crossConnects: randomNum(10, 100),
+          disconnects: randomNum(10, 100),
+          errorsPerCase: parseFloat((Math.random() * 2).toFixed(2)),
+        },
+        jira: {
+          timeSpentHours: randomNum(100, 800),
+          casesAssignedThisYear: randomNum(15, 100),
+        },
+        serviceNow: {
+          billableHours: randomNum(100, 800),
+          nonBillableHours: randomNum(100, 800),
+        },
+        UKG: {
+          directLaborHours: randomNum(100, 800),
+          capexLaborHours: randomNum(100, 800),
+          defferedLaborHours: randomNum(100, 800),
+        },
+        monthlyErrors: generateMonthError(),
+      });
+      await performance.save();
+      console.log(`Created Performace data for: ${lastName}`);
+      console.log("\n✅ Database seeded successfully!");
+      console.log("\n📝 Login credentials for testing:");
+      console.log("   Email: eclevenger@work.com");
+      console.log("   Password: password123");
+      console.log("\n   (All employees use password123)\n");
+    }
+  } catch (error) {
+    console.error("Seeding Error:", error);
+    process.exit(1);
+  }
+};
+
+seedDatabase();
