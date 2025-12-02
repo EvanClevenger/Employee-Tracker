@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    match: ["@switch.com"],
+    match: [/^\S+@switch\.com$/, "Please enter a valid Switch email"], // Must use RegEx when using TS & Mongoose
   },
   password: {
     type: String,
@@ -45,6 +45,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("User", UserSchema);
+export default mongoose.model("User", UserSchema);
 // "User" is the name of the model
 // UserSchema is the schema object that defines the DB structure
