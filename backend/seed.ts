@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import User from "./models/User.ts";
-import Performance from "./models/Performace.ts";
+import User from "./models/User";
+import Performance from "./models/Performace";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -144,7 +144,7 @@ const seedDatabase = async (): Promise<void> => {
       const hashedPassword = await bcrypt.hash(emp.password, 10); // hash password
       const user = new User({
         ...emp,
-        password: hashedPassword,
+        password: hashedPassword, // do I need a first name here?
         lastName,
         profilePic: "😎",
       });

@@ -36,15 +36,8 @@
     // "noPropertyAccessFromIndexSignature": true,
 
     // Recommended Options
+    "noEmit": true,
     "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
-    "outDir": "dist",
-    "emitDeclarationOnly": true,
-    "allowImportingTsExtensions": true
+    "skipLibCheck": true
   }
 }
