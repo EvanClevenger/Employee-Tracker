@@ -1,15 +1,15 @@
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
-import User from "./models/User";
-import Performance from "./models/Performace";
-import dotenv from "dotenv";
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const User = require("./models/User");
+const PerformanceModule = require("./models/Performance");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
 mongoose
   .connect(process.env.MONGODB_URI as string, {})
   .then(() => console.log("Connected to DB"))
-  .catch((err) => console.error("ERROR connecting to DB:", err));
+  .catch((err: string) => console.error("ERROR connecting to DB:", err));
 
 const randomNum = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
@@ -52,7 +52,8 @@ const employees = [
   {
     email: "eclevenger@switch.com",
     password: "password123",
-    firstName: "Emily",
+    firstName: "evan",
+    lastName: "clevenger",
     title: "Network Infrastructure Technician",
     department: "Engineering",
     startDate: new Date("2022-03-15"),
@@ -60,7 +61,8 @@ const employees = [
   {
     email: "jsmith@switch.com",
     password: "password123",
-    firstName: "John",
+    firstName: "john",
+    lastName: "smith",
     title: "Software Engineer",
     department: "Engineering",
     startDate: new Date("2023-01-10"),
@@ -68,7 +70,8 @@ const employees = [
   {
     email: "sjohnson@switch.com",
     password: "password123",
-    firstName: "Sarah",
+    firstName: "sarah",
+    lastName: "johnson",
     title: "Lead Engineer",
     department: "Engineering",
     startDate: new Date("2021-06-01"),
@@ -76,7 +79,8 @@ const employees = [
   {
     email: "mwilliams@switch.com",
     password: "password123",
-    firstName: "Michael",
+    firstName: "michael",
+    lastName: "williams",
     title: "Sales Manager",
     department: "Sales",
     startDate: new Date("2022-08-20"),
@@ -84,7 +88,8 @@ const employees = [
   {
     email: "rbrown@switch.com",
     password: "password123",
-    firstName: "Rachel",
+    firstName: "rachel",
+    lastName: "brown",
     title: "Account Executive",
     department: "Sales",
     startDate: new Date("2023-02-14"),
@@ -92,7 +97,8 @@ const employees = [
   {
     email: "ddavis@switch.com",
     password: "password123",
-    firstName: "David",
+    firstName: "david",
+    lastName: "davis",
     title: "Sales Representative",
     department: "Sales",
     startDate: new Date("2023-05-01"),
@@ -100,33 +106,37 @@ const employees = [
   {
     email: "amiller@switch.com",
     password: "password123",
-    firstName: "Amanda",
+    firstName: "amanda",
+    lastName: "miller",
     title: "Operations Manager",
-    department: "Operations",
+    department: "NetOps",
     startDate: new Date("2021-11-10"),
   },
   {
     email: "jwilson@switch.com",
     password: "password123",
-    firstName: "James",
-    title: "Operations Coordinator",
-    department: "Operations",
+    firstName: "james",
+    lastName: "wilson",
+    title: "Engineer",
+    department: "DCO Systems",
     startDate: new Date("2022-09-05"),
   },
   {
     email: "lmoore@switch.com",
     password: "password123",
-    firstName: "Linda",
-    title: "Junior Engineer",
-    department: "Engineering",
+    firstName: "linda",
+    lastName: "moore",
+    title: "Engineer",
+    department: "Junior Engineer",
     startDate: new Date("2024-01-08"),
   },
   {
     email: "ktaylor@switch.com",
     password: "password123",
-    firstName: "Kevin",
-    title: "Business Analyst",
-    department: "Operations",
+    firstName: "kevin",
+    lastName: "taylor",
+    title: "Analyst",
+    department: "Business Analyst",
     startDate: new Date("2023-07-22"),
   },
 ];
@@ -137,7 +147,7 @@ const seedDatabase = async (): Promise<void> => {
     console.log("clearing existing Data");
     //clear existing data
     await User.deleteMany({});
-    await Performance.deleteMany({});
+    await PerformanceModule.deleteMany({});
     console.log("creating users");
     for (const emp of employees) {
       const lastName = (emp.email.split("@")[0] ?? "").slice(1) || "unknown"; //extracting last name
@@ -151,7 +161,7 @@ const seedDatabase = async (): Promise<void> => {
       await user.save();
       console.log(`Created ${emp.firstName}, ${lastName}`);
       //create performace data
-      const performance = new Performance({
+      const performance = new PerformanceModule({
         employeeLastName: lastName,
         salesforce: {
           totalCasesToDate: randomNum(50, 500),
@@ -179,9 +189,6 @@ const seedDatabase = async (): Promise<void> => {
       console.log(`Created Performace data for: ${lastName}`);
       console.log("\n✅ Database seeded successfully!");
       console.log("\n📝 Login credentials for testing:");
-      console.log("   Email: eclevenger@work.com");
-      console.log("   Password: password123");
-      console.log("\n   (All employees use password123)\n");
     }
   } catch (error) {
     console.error("Seeding Error:", error);

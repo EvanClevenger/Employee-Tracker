@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -14,11 +14,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
   },
-  lastname: {
+  lastName: {
     type: String,
     required: true,
   },
-  firstname: {
+  firstName: {
     type: String,
     required: true,
   },
@@ -29,9 +29,17 @@ const UserSchema = new mongoose.Schema({
   department: {
     type: String,
     required: true,
-    enum: ["Engineering", "Security", "DCO Systems", "NetOps"], //only these are allowed
+    enum: [
+      "Engineering",
+      "Security",
+      "DCO Systems",
+      "NetOps",
+      "Sales",
+      "Business Analyst",
+      "Junior Engineer",
+    ], //only these are allowed
   },
-  startdate: {
+  startDate: {
     type: Date,
     required: true,
   },
@@ -45,6 +53,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);
 // "User" is the name of the model
 // UserSchema is the schema object that defines the DB structure
