@@ -2,11 +2,11 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    // "rootDir": "./src",
-    // "outDir": "./dist",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "verbatimModuleSyntax": true,
+    "rootDir": "./",
+    "outDir": "./dist",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "verbatimModuleSyntax": false,
     "esModuleInterop": true,
 
     // Environment Settings
@@ -36,7 +36,7 @@
     // "noPropertyAccessFromIndexSignature": true,
 
     // Recommended Options
-    "noEmit": true,
+    "noEmit": false,
     "strict": true,
     "skipLibCheck": true
   }

@@ -1,0 +1,18 @@
+import jwt from "jsonwebtoken";
+const authMiddleware = (req, res, next) => {
+    try {
+        const header = req.header("Authorization") ?? req.header("authorization");
+        const token = header?.replace("Bearer ", "");
+        if (!token) {
+            return res.status(401).json({ error: "No authentication token provided" });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
+    }
+    catch (error) {
+        res.status(401).json({ error: "Invalid or expired token" });
+    }
+};
+export default authMiddleware;
+//# sourceMappingURL=auth.js.map

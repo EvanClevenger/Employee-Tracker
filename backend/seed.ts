@@ -1,27 +1,27 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const User = require("./models/User");
-const PerformanceModule = require("./models/Performance");
-const dotenv = require("dotenv");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import User from "./models/User.js";
+import PerformanceModule from "./models/Performance.js";
+import dotenv from "dotenv";
 
 dotenv.config();
 
 mongoose
   .connect(process.env.MONGODB_URI as string, {})
   .then(() => console.log("Connected to DB"))
-  .catch((err: string) => console.error("ERROR connecting to DB:", err));
+  .catch((err: unknown) => console.error("ERROR connecting to DB:", err));
 
 const randomNum = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
 interface MonthError {
   month: string;
-  salseforceErrors: number;
+  salesforceErrors: number;
   jiraErrors: number;
 }
 
-const generateMonthError = () => {
-  const months = [];
+const generateMonthError = (): MonthError[] => {
+  const months: MonthError[] = [];
   const currentDate = new Date();
   for (let i = 5; i >= 0; i--) {
     const date = new Date(currentDate);
@@ -34,8 +34,8 @@ const generateMonthError = () => {
       salesforceErrors: randomNum(0, 15),
       jiraErrors: randomNum(0, 10),
     });
-    return months;
   }
+  return months;
 };
 // helper function to generate monthly errors
 

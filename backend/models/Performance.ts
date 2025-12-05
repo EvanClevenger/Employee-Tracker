@@ -1,4 +1,4 @@
-import mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const MonthlyErrorSchema = new mongoose.Schema({
   month: {
@@ -47,4 +47,5 @@ const PerformanceSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-module.exports = mongoose.model("Performance", PerformanceSchema);
+
+export default mongoose.model("Performance", PerformanceSchema);
