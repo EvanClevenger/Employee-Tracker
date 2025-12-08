@@ -30,3 +30,17 @@ api.interceptors.response.use(
     }
   }
 );
+
+// Auth endpoints
+const authAPI = {
+  login: (email, password) => api.post("/auth/login", { email, password }),
+  register: (userData) => api.post("/auth/register", userData),
+  getCurrentUser: () => api.get("/auth/me"),
+};
+// Employee endpoints export
+const employeeAPI = {
+  getMyStats: () => api.get("/employee/my-stats"),
+  getAllEmployees: () => api.get("/employees"),
+  getEmployeeByLastName: (lastName) => api.get(`/employees/${lastName}`),
+};
+export default api;
