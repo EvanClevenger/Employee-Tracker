@@ -3,7 +3,7 @@ import type { Express, Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import authRoute from "./routes/auth.js";
+import authRoute from "./routes/auth";
 
 dotenv.config();
 
