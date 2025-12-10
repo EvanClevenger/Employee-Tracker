@@ -1,12 +1,15 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { authAPI } from "./api";
 
-//create context
-const AuthContext = createContext(null);
+//create context, React gives you AuthContext.Provider and AuthContext.Consumer
+// Provider provides data to children, its a shared box of data
+const AuthContext = createContext(null); // this is what we want to share
 
-//custom hook to use auth context
+//custom hook to use AuthContext
+// A custom hook is just a function that starts with use and wraps other hooks.
+// will have to call useAuth() in child component to get data
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext); //Consumer
   if (!context) {
     throw new Error("useAuth must be used within AuthProvider");
   }
@@ -19,7 +22,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   //check if user is logged in on mount
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     const savedUser = localStorage.getItem("user");
@@ -74,6 +76,7 @@ export const AuthProvider = ({ children }) => {
       };
     }
   };
+  // collects all state and functions into 1 obj
   const value = {
     user,
     login,
@@ -82,9 +85,11 @@ export const AuthProvider = ({ children }) => {
     loading,
     isAuthenticated: !!user,
   };
+  //AuthContext is the context obj of the custom hook (useAuth)
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>
   );
+  // {!loading && children} is a conditional render, if loading false --> render children
 };
