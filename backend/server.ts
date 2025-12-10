@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoute from "./routes/auth";
+import employeeRoute from "./routes/employee";
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ app.get("/api/health", (req: Request, res: Response) => {
 
 // Import routes
 app.use("/api/auth", authRoute);
-// app.use("/api/employees", employeeRoute);
+app.use("/api/employees", employeeRoute);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
