@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { authAPI } from "./api";
+import authAPI from "./api";
 
 //create context, React gives you AuthContext.Provider and AuthContext.Consumer
 // Provider provides data to children, its a shared box of data
@@ -17,7 +17,7 @@ export const useAuth = () => {
 };
 
 //Auth Provider Component export
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -93,3 +93,5 @@ export const AuthProvider = ({ children }) => {
   );
   // {!loading && children} is a conditional render, if loading false --> render children
 };
+
+export default AuthProvider;
