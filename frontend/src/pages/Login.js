@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useAuth from "../utils/AuthContext";
+import { useAuth } from "../utils/AuthContext"; // must import with {} if not using default export
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -53,7 +53,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="yourname@switch.com"
               required></input>
           </div>
@@ -72,7 +72,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 disabled:opacity-50">
+            className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 disabled:opacity-50">
             {" "}
             {loading ? "Signing in..." : "Sign In"}
           </button>

@@ -17,7 +17,7 @@ export const useAuth = () => {
 };
 
 //Auth Provider Component export
-export const AuthProvider = () => {
+export const AuthProvider = ({ children = {} }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -94,4 +94,4 @@ export const AuthProvider = () => {
   // {!loading && children} is a conditional render, if loading false --> render children
 };
 
-export default AuthProvider;
+// export default AuthProvider;
