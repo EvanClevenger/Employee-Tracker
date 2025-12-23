@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext"; // must import with {} if not using default export
+import Register from "./Register";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -82,7 +83,7 @@ const Login = () => {
             {" "}
             Don't have an account?{""}{" "}
             <Link
-              to="/Register"
+              to="/register"
               className="text-blue-600 hover:underline font-semibold">
               Register
             </Link>
